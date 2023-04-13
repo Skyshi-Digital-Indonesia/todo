@@ -3,6 +3,7 @@ package data
 import (
 	"time"
 	"todo/fitur/activities"
+	"todo/fitur/todos/data"
 
 	"gorm.io/gorm"
 )
@@ -14,6 +15,7 @@ type Activities struct {
 	Created_at  time.Time
 	Updated_at  time.Time
 	Deleted_at  gorm.DeletedAt `gorm:"index"`
+	Todos       []data.Todo    `gorm:"foreignKey:Activity_Group_id;references:Activity_id"`
 }
 
 // register

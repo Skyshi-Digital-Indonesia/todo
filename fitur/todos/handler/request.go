@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"time"
 	"todo/fitur/todos"
 )
 
@@ -11,6 +12,8 @@ type TodoRequest struct {
 	ActivitiesID uint   `json:"activity_group_id" form:"activity_group_id"`
 	Title        string `json:"title" form:"title"`
 	Status       string `json:"status" form:"status"`
+	Created_at   time.Time
+	Updated_at   time.Time
 }
 
 func TodoRequestToEnitities(data TodoRequest) todos.TodoEntities {
@@ -21,5 +24,7 @@ func TodoRequestToEnitities(data TodoRequest) todos.TodoEntities {
 		ActivitiesID: data.ActivitiesID,
 		Title:        data.Title,
 		Status:       data.Status,
+		Createdat:    data.Created_at,
+		Updatedat:    data.Updated_at,
 	}
 }
