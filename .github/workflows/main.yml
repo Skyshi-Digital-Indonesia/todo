@@ -42,6 +42,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd todo
+          sudo chmod 777 /var/run/docker.sock
           git pull origin main 
           docker stop todo
           docker rm todo
