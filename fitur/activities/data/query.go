@@ -34,9 +34,9 @@ func (ad *activitiesData) FormData(newActivity activities.ActivitiesEntities) (a
 		}
 		return activities.ActivitiesEntities{}, errors.New(msg)
 	}
-	newActivity.ID = activitiesGorm.ID
-	newActivity.Createdat = activitiesGorm.CreatedAt
-	newActivity.Updatedat = activitiesGorm.UpdatedAt
+	newActivity.ID = activitiesGorm.Activity_id
+	newActivity.Createdat = activitiesGorm.Updated_at
+	newActivity.Updatedat = activitiesGorm.Updated_at
 	return newActivity, nil
 }
 
@@ -44,7 +44,7 @@ func (ad *activitiesData) FormData(newActivity activities.ActivitiesEntities) (a
 func (ac *activitiesData) GetActivity() ([]activities.ActivitiesEntities, error) {
 	var activ []Activities
 
-	tx := ac.db.Raw("SELECT activities.id, activities.title, activities.email, activities.created_at, activities.updated_at From activities WHERE activities.deleted_at IS NULL").Find(&activ)
+	tx := ac.db.Raw("SELECT activities.activity_id, activities.title, activities.email, activities.created_at, activities.updated_at From activities WHERE activities.deleted_at IS NULL").Find(&activ)
 
 	if tx.Error != nil {
 		log.Println("All Activities error", tx.Error.Error())
@@ -58,7 +58,7 @@ func (ac *activitiesData) GetActivity() ([]activities.ActivitiesEntities, error)
 func (ac *activitiesData) GetId(id int) (activities.ActivitiesEntities, error) {
 	var activ Activities
 
-	tx := ac.db.Raw("SELECT activities.id, activities.title, activities.email, activities.created_at, activities.updated_at From activities Where activities.id= ? AND activities.deleted_at IS NULL", id).Find(&activ)
+	tx := ac.db.Raw("SELECT activities.activity_id, activities.title, activities.email, activities.created_at, activities.updated_at From activities Where activities.activity_id= ? AND activities.deleted_at IS NULL", id).Find(&activ)
 
 	if tx.Error != nil {
 		log.Println("All Activities error", tx.Error.Error())
@@ -73,7 +73,7 @@ func (ad *activitiesData) Updata(id int, datup activities.ActivitiesEntities) (a
 	activ := Activities{}
 
 	acgorm := FromEntities(datup)
-	qry := ad.db.Model(&activ).Where("id = ?", id).Updates(&acgorm)
+	qry := ad.db.Model(&activ).Where("activity_id= ?", id).Updates(&acgorm)
 
 	affrows := qry.RowsAffected
 	if affrows == 0 {
@@ -85,7 +85,7 @@ func (ad *activitiesData) Updata(id int, datup activities.ActivitiesEntities) (a
 		log.Println("update activities query error", err.Error())
 		return activities.ActivitiesEntities{}, err
 	}
-	tx := ad.db.Raw("SELECT activities.id, activities.title, activities.email, activities.created_at, activities.updated_at From activities Where activities.id= ?", id).Find(&activ)
+	tx := ad.db.Raw("SELECT activities.activity_id, activities.title, activities.email, activities.created_at, activities.updated_at From activities Where activities.activity_id= ?", id).Find(&activ)
 
 	if tx.Error != nil {
 		log.Println("All Activities error", tx.Error.Error())
@@ -99,6 +99,7 @@ func (ad *activitiesData) Updata(id int, datup activities.ActivitiesEntities) (a
 // Delete implements activities.ActivitiesData
 func (ad *activitiesData) Delete(id int) error {
 	activ := Activities{}
+
 	qry := ad.db.Delete(&activ, id)
 
 	rowAffect := qry.RowsAffected

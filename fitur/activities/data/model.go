@@ -1,25 +1,29 @@
 package data
 
 import (
+	"time"
 	"todo/fitur/activities"
 
 	"gorm.io/gorm"
 )
 
 type Activities struct {
-	gorm.Model
-	Title string `gorm:"type:char(50);not null"`
-	Email string `gorm:"type:varchar(50);unique;not null"`
+	Activity_id uint   `gorm:"primarykey"`
+	Title       string `gorm:"type:char(50);not null"`
+	Email       string `gorm:"type:varchar(50);unique;not null"`
+	Created_at  time.Time
+	Updated_at  time.Time
+	Deleted_at  gorm.DeletedAt `gorm:"index"`
 }
 
 // register
 func FromEntities(dataCore activities.ActivitiesEntities) Activities { //fungsi yang mengambil data dari entities usercore dan merubah data ke user gorm(model.go)
 	return Activities{
-		Model: gorm.Model{ID: dataCore.ID, UpdatedAt: dataCore.Updatedat,
-			CreatedAt: dataCore.Createdat,
-		},
-		Email: dataCore.Email,
-		Title: dataCore.Title,
+		Activity_id: dataCore.ID,
+		Email:       dataCore.Email,
+		Title:       dataCore.Title,
+		Created_at:  dataCore.Createdat,
+		Updated_at:  dataCore.Updatedat,
 	}
 
 }
@@ -27,11 +31,11 @@ func FromEntities(dataCore activities.ActivitiesEntities) Activities { //fungsi 
 // profile user
 func (dataModel *Activities) ModelsToCore() activities.ActivitiesEntities { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
 	return activities.ActivitiesEntities{
-		ID:        dataModel.ID,
+		ID:        dataModel.Activity_id,
 		Title:     dataModel.Title,
 		Email:     dataModel.Email,
-		Updatedat: dataModel.UpdatedAt,
-		Createdat: dataModel.CreatedAt,
+		Updatedat: dataModel.Updated_at,
+		Createdat: dataModel.Created_at,
 	}
 }
 
@@ -47,10 +51,10 @@ func ListModelEntities(datamodel []Activities) []activities.ActivitiesEntities {
 
 func ToCore(model Activities) activities.ActivitiesEntities {
 	return activities.ActivitiesEntities{
-		ID:        model.ID,
+		ID:        model.Activity_id,
 		Title:     model.Title,
 		Email:     model.Email,
-		Updatedat: model.UpdatedAt,
+		Updatedat: model.Updated_at,
 	}
 
 }
