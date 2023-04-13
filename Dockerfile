@@ -10,7 +10,7 @@ WORKDIR /app
 ADD . /app
 
 ##buat executeable
-RUN go build -o todo .0
+RUN go build -o todo .
 
 ##jalankan executeable
 CMD ["/app/todo"]
