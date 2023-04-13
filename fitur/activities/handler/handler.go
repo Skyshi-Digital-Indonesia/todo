@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 	"todo/fitur/activities"
 	"todo/helper"
 
@@ -17,6 +18,8 @@ type ActivitiesHandler struct {
 func (ad *ActivitiesHandler) FormData(c echo.Context) error {
 
 	Inputform := ActivitiesRequest{}
+	Inputform.Created_at = time.Now()
+	Inputform.Updated_at = time.Now()
 
 	errbind := c.Bind(&Inputform)
 	if errbind != nil {
@@ -68,11 +71,12 @@ func (ad *ActivitiesHandler) GetId(c echo.Context) error {
 
 func (ad *ActivitiesHandler) Updata(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	Inputform := ActivitiesRequest{}
+	Inputform := UpdateRequest{}
+	Inputform.Updated_at = time.Now()
 	if err := c.Bind(&Inputform); err != nil {
 		return c.JSON(http.StatusBadRequest, "format inputan salah")
 	}
-	res, err := ad.ActivitiesServices.Updata(id, ActivitiesRequestToUserCore(Inputform))
+	res, err := ad.ActivitiesServices.Updata(id, ActivityRequestToUserCore(Inputform))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
