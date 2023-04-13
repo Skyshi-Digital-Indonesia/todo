@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"time"
 	"todo/fitur/todos"
 	"todo/helper"
 
@@ -17,6 +18,8 @@ func (th *TodosHandler) AddTodo(c echo.Context) error {
 
 	Inputform := TodoRequest{}
 	Inputform.Priority = "very-high"
+	Inputform.Created_at = time.Now()
+	Inputform.Updated_at = time.Now()
 	errbind := c.Bind(&Inputform)
 	if errbind != nil {
 		return c.JSON(http.StatusBadRequest, "format inputan salah")
@@ -39,6 +42,8 @@ func (th *TodosHandler) AddTodo(c echo.Context) error {
 func (th *TodosHandler) Update(c echo.Context) error {
 
 	Inputform := TodoRequest{}
+
+	Inputform.Updated_at = time.Now()
 	errbind := c.Bind(&Inputform)
 	if errbind != nil {
 		return c.JSON(http.StatusBadRequest, "format inputan salah")

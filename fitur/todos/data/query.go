@@ -36,9 +36,9 @@ func (td *todoData) AddTodo(newTodo todos.TodoEntities) (todos.TodoEntities, err
 		}
 		return todos.TodoEntities{}, errors.New(msg)
 	}
-	newTodo.ID = data.ID
-	newTodo.Createdat = data.CreatedAt
-	newTodo.Updatedat = data.UpdatedAt
+	newTodo.ID = data.Todo_id
+	newTodo.Createdat = data.Created_at
+	newTodo.Updatedat = data.Updated_at
 	return newTodo, nil
 }
 
@@ -46,7 +46,7 @@ func (td *todoData) AddTodo(newTodo todos.TodoEntities) (todos.TodoEntities, err
 func (td *todoData) Update(id int, input todos.TodoEntities) (todos.TodoEntities, error) {
 	todo := Todo{}
 	data := Todata(input)
-	tx := td.db.Model(&todo).Where("id = ?", id).Updates(&data)
+	tx := td.db.Model(&todo).Where("todo_id = ?", id).Updates(&data)
 
 	if tx.Error != nil {
 		log.Println("update todo error :", tx.Error)
@@ -57,7 +57,7 @@ func (td *todoData) Update(id int, input todos.TodoEntities) (todos.TodoEntities
 		log.Println("update todo query error : data not found")
 		return todos.TodoEntities{}, errors.New("not found")
 	}
-	tx2 := td.db.Raw("SELECT todos.id, todos.title, todos.priority, todos.is_active, todos.created_at, todos.updated_at, todos.activities_id From todos Where todos.id= ?", id).Find(&todo)
+	tx2 := td.db.Raw("SELECT todos.todo_id, todos.title, todos.priority, todos.is_active, todos.created_at, todos.updated_at, todos.activity_group_id From todos Where todos.todo_id= ?", id).Find(&todo)
 	if tx2.Error != nil {
 		log.Println("All Activities error", tx.Error.Error())
 		return todos.TodoEntities{}, tx2.Error
@@ -70,7 +70,7 @@ func (td *todoData) Update(id int, input todos.TodoEntities) (todos.TodoEntities
 func (td *todoData) GetAll(activid int) ([]todos.TodoEntities, error) {
 	var todo []Todo
 
-	tx := td.db.Raw("SELECT todos.id, todos.title, todos.priority, todos.is_active, todos.created_at, todos.updated_at, todos.activities_id From todos WHERE todos.activities_id= ?", activid).Find(&todo)
+	tx := td.db.Raw("SELECT todos.todo_id, todos.title, todos.priority, todos.is_active, todos.created_at, todos.updated_at, todos.activity_group_id From todos WHERE todos.activity_group_id= ?", activid).Find(&todo)
 
 	if tx.Error != nil {
 		log.Println("All Activities error", tx.Error.Error())
