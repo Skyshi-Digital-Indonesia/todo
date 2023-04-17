@@ -10,13 +10,13 @@ import (
 
 type Todo struct {
 	Todo_id           uint `gorm:"primarykey"`
+	Activity_Group_id uint
 	Title             string
 	Priority          string
-	Is_Active          bool
+	Is_Active         bool
 	Created_at        time.Time
 	Updated_at        time.Time
 	Deleted_at        gorm.DeletedAt `gorm:"index"`
-
 }
 
 func Todata(data todos.TodoEntities) Todo {
@@ -25,7 +25,7 @@ func Todata(data todos.TodoEntities) Todo {
 		Todo_id:           data.ID,
 		Title:             data.Title,
 		Priority:          data.Priority,
-		IsActive:          data.IsActive,
+		Is_Active:         data.IsActive,
 		Activity_Group_id: data.ActivitiesID,
 		Created_at:        data.Createdat,
 		Updated_at:        data.Updatedat,
@@ -37,7 +37,7 @@ func (data *Todo) ModelsToCore() todos.TodoEntities { //fungsi yang mengambil da
 		ID:           data.Todo_id,
 		Title:        data.Title,
 		Priority:     data.Priority,
-		IsActive:     data.IsActive,
+		IsActive:     data.Is_Active,
 		Createdat:    data.Created_at,
 		Updatedat:    data.Updated_at,
 		ActivitiesID: data.Activity_Group_id,
@@ -49,7 +49,7 @@ func ToCore(data Todo) todos.TodoEntities {
 		ID:           data.Todo_id,
 		Title:        data.Title,
 		Priority:     data.Priority,
-		IsActive:     data.IsActive,
+		IsActive:     data.Is_Active,
 		Updatedat:    data.Updated_at,
 		ActivitiesID: data.Activity_Group_id,
 	}
