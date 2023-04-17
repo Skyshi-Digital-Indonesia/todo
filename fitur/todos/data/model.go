@@ -12,11 +12,11 @@ type Todo struct {
 	Todo_id           uint `gorm:"primarykey"`
 	Title             string
 	Priority          string
-	IsActive          bool
+	Is_Active          bool
 	Created_at        time.Time
 	Updated_at        time.Time
 	Deleted_at        gorm.DeletedAt `gorm:"index"`
-	Activity_Group_id uint
+
 }
 
 func Todata(data todos.TodoEntities) Todo {
