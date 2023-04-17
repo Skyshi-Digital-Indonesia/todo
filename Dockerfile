@@ -5,7 +5,6 @@ RUN mkdir /app
 
 ##set direktori utama
 WORKDIR /app
-
 ##copy seluruh file ke app
 ADD . /app
 EXPOSE 3030
@@ -13,4 +12,4 @@ EXPOSE 3030
 RUN go build -o todo .
 
 ##jalankan executeable
-CMD ["/app/todo"]
+CMD ["./todo"]
