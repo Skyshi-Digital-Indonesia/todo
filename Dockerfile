@@ -11,6 +11,6 @@ ADD . /app
 
 ##buat executeable
 RUN go build -o todo .
-
+EXPOSE 3030
 ##jalankan executeable
 CMD ["/app/todo"]
