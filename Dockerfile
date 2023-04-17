@@ -13,4 +13,4 @@ ADD . /app
 RUN go build -o todo .
 
 ##jalankan executeable
-CMD ["/app/todo"]
+CMD ["./todo"]
